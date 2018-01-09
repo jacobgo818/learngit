@@ -1,4 +1,4 @@
-==========================================================
+﻿==========================================================
 10. Regular Expression Matching
 
 
@@ -356,6 +356,121 @@ public int minPathSum(int[][] grid) {
 
 	return dp[row - 1][col - 1];
 }
+
+
+==========================================================
+
+70. Climbing Stairs
+
+斐波那契数列问题，关键点，找出递推公式，然后写出矩阵N次方的方法（logN）
+
+矩阵N次方方法可以直接复制
+
+
+You are climbing a stair case. It takes n steps to reach to the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+Note: Given n will be a positive integer.
+
+
+Example 1:
+
+Input: 2
+Output:  2
+Explanation:  There are two ways to climb to the top.
+
+1. 1 step + 1 step
+2. 2 steps
+Example 2:
+
+Input: 3
+Output:  3
+Explanation:  There are three ways to climb to the top.
+
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 steps + 1 step
+
+==========================================================
+
+/*
+ * 动态规划解法
+ */
+public int climbStairs3(int n) {
+	if (n <= 0)
+		return 0;
+	if (n == 1)
+		return 1;
+	if (n == 2)
+		return 2;
+
+	int[][] base = { { 1, 1 }, { 1, 0 } };
+	int[][] res = matrixPower(base, n - 2);
+
+	return 2*res[0][0] + res[1][0];
+}
+
+
+/*
+ * 求矩阵m的p次方
+ */
+public int[][] matrixPower(int[][] m, int p) {
+	int[][] res = new int[m.length][m[0].length];
+	// 把res设为单位矩阵，相当于整数中的1；
+	for (int i = 0; i < res.length; i++) {
+		res[i][i] = 1;
+	}
+
+	int[][] tmp = m;
+	for (; p != 0; p >>= 1) {
+		if ((p & 1) != 0)
+			res = muliMatrix(res, tmp);
+		tmp = muliMatrix(tmp, tmp);
+	}
+	return res;
+}
+
+/*
+ * 两个矩阵相乘
+ */
+private int[][] muliMatrix(int[][] m1, int[][] m2) {
+	int[][] res = new int[m1.length][m2[0].length];
+	for (int i = 0; i < m1.length; i++) {
+		for (int j = 0; j < m2[0].length; j++) {
+			for (int k = 0; k < m2.length; k++) {
+				res[i][j] += m1[i][k] * m2[k][j];
+			}
+		}
+	}
+	return res;
+}
+
+
+public int climbStairs(int n) {
+	if (n <= 0)
+		return 0;
+	if (n == 1)
+		return 1;
+	if (n == 2)
+		return 2;
+
+	int oneStepBefore = 2;
+	int twoStepsBefore = 1;
+	int allWays = 0;
+	
+	for(int i=3;i<=n;i++){
+		allWays=oneStepBefore+twoStepsBefore;
+		twoStepsBefore=oneStepBefore;
+		oneStepBefore=allWays;
+	}
+	return allWays;
+}
+
+
+
+
+
 
 ==========================================================
 72. Edit Distance

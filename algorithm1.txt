@@ -108,6 +108,22 @@ public boolean chkMixture(String str1, int n, String str2, int m, String aim, in
 		return dp[n][m];
 	}
 
+4.将二进制转成十进制（不考虑符号位）
+public int binaryToDecimal(int binaryNumber) {
 
+		int decimal = 0;
+		int p = 0;
+		while (true) {
+			if (binaryNumber == 0) {
+				break;
+			} else {
+				int temp = binaryNumber % 10;
+				decimal += temp * Math.pow(2, p);
+				binaryNumber = binaryNumber / 10;
+				p++;
+			}
+		}
+		return decimal;
+	}
 
 
